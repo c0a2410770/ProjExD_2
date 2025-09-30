@@ -1,4 +1,3 @@
-import math
 import os
 import random
 import sys
@@ -29,6 +28,7 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:  # 練習3 こうかとん�
         tate = False
     return yoko, tate
 
+
 def gameover(screen: pg.Surface) -> None:  # 演習1
     """
     引数:表示先のスクリーン
@@ -39,7 +39,6 @@ def gameover(screen: pg.Surface) -> None:  # 演習1
     pg.draw.rect(gameover_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
     gameover_img.set_alpha(128)  #　ゲームオーバー画面の透明度
     
-
     fonto = pg.font.Font(None, 80)  # テキスト作成
     txt = fonto.render("Game Over",
                        True, (255, 255, 255))
@@ -57,6 +56,7 @@ def gameover(screen: pg.Surface) -> None:  # 演習1
     pg.display.update()
     time.sleep(5)
 
+
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
     """
     引数なし
@@ -71,6 +71,7 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
         bb_img.set_colorkey((0, 0, 0))
         bb_imgs.append(bb_img)
     return bb_imgs, bb_accs
+
 
 def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]: # 演習3
     """
@@ -92,6 +93,7 @@ def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]: # 演習3
         (-5, +5): pg.transform.rotozoom(kk_img, 45, 0.9),    # 左下
     }
     return kk_dict
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
