@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -26,6 +27,35 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:  # 練習3 こうかとん�
     if rct.top < 0 or HEIGHT < rct.bottom:  #   縦方向にはみ出ていたら
         tate = False
     return yoko, tate
+
+def gameover(screen: pg.Surface) -> None:  # 演習1
+    """
+    引数:表示したいスクリーン
+    戻り値:なし
+
+    """
+    gameover_img = pg.Surface((WIDTH, HEIGHT))
+    pg.draw.rect(gameover_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+    gameover_img.set_alpha(128)  #　ゲームオーバー画面の透明度
+    
+
+    fonto = pg.font.Font(None, 80)  # テキスト作成
+    txt = fonto.render("Game Over",
+                       True, (255, 255, 255))
+    gameover_img.blit(txt, [400, 250])
+
+    gameover_kk_img = pg.image.load("fig/8.png")  # こうかとんの画像描画
+    gameover_kk_rct_L = gameover_kk_img.get_rect()
+    gameover_kk_rct_L.center = 360,270
+    gameover_kk_rct_R = gameover_kk_img.get_rect()
+    gameover_kk_rct_R.center = 750,270
+    gameover_img.blit(gameover_kk_img, gameover_kk_rct_L)
+    gameover_img.blit(gameover_kk_img,gameover_kk_rct_R)
+    
+    screen.blit(gameover_img,[0,0])
+    pg.display.update()
+    time.sleep(5)
+
 
 
 def main():
@@ -54,6 +84,7 @@ def main():
         screen.blit(bg_img, [0, 0]) 
 
         if kk_rct.colliderect(bb_rct):  # こうかとんと爆弾の重なり判定
+            gameover(screen)
             return  # ゲームオーバー
 
         key_lst = pg.key.get_pressed()
