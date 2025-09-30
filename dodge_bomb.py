@@ -57,6 +57,10 @@ def gameover(screen: pg.Surface) -> None:  # 演習1
     time.sleep(5)
 
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
+    """
+    引数なし
+    戻り値:爆弾の拡大サイズと加速度のリストを返す
+    """
     bb_imgs = []
     bb_accs = [a for a in range(1, 11)]  # 爆弾の速さのリスト
     for r in range(1,11):
@@ -67,6 +71,10 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
     return bb_imgs, bb_accs
 
 def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]: # 演習3
+    """
+    引数なし
+    戻り値:こうかとんの移動量タプルに対応するこうかとんの画像を返す辞書
+    """
     kk_img = pg.image.load("fig/3.png")
     kk_flip_img = pg.transform.flip(kk_img,True, False)  # 右向き用効果トン画像
     kk_dict = {
