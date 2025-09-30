@@ -30,11 +30,11 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:  # 練習3 こうかとん�
 
 def gameover(screen: pg.Surface) -> None:  # 演習1
     """
-    引数:表示したいスクリーン
+    引数:表示先のスクリーン
     戻り値:なし
-
+    こうかとんと爆弾が重なったらゲームオーバーの画面を表示し、5秒後にプログラムを終了
     """
-    gameover_img = pg.Surface((WIDTH, HEIGHT))
+    gameover_img = pg.Surface((WIDTH, HEIGHT))  # ゲームオーバー画面の作成
     pg.draw.rect(gameover_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
     gameover_img.set_alpha(128)  #　ゲームオーバー画面の透明度
     
@@ -59,7 +59,8 @@ def gameover(screen: pg.Surface) -> None:  # 演習1
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
     """
     引数なし
-    戻り値:爆弾の拡大サイズと加速度のリストを返す
+    戻り値:拡大リストと加速度リスト
+    爆弾の拡大サイズリストbb_imgsと加速度リストbb_accsを作成する
     """
     bb_imgs = []
     bb_accs = [a for a in range(1, 11)]  # 爆弾の速さのリスト
@@ -73,14 +74,15 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
 def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]: # 演習3
     """
     引数なし
-    戻り値:こうかとんの移動量タプルに対応するこうかとんの画像を返す辞書
+    戻り値:移動量タプルと対応した画像の辞書
+    こうかとんの移動量タプルに対応したこうかとんの画像を返す辞書
     """
     kk_img = pg.image.load("fig/3.png")
-    kk_flip_img = pg.transform.flip(kk_img,True, False)  # 右向き用効果トン画像
+    kk_flip_img = pg.transform.flip(kk_img,True, False)  # 右向き用こうかとん画像
     kk_dict = {
         (0, 0): pg.transform.rotozoom(kk_img, 0, 0.9),       # その場
         (+5, 0): pg.transform.rotozoom(kk_flip_img, 0,0.9),    # 右
-        (-5, 0): pg.transform.rotozoom(kk_img, 0, 0.9),      # 左
+        (-5, 0): pg.transform.rotozoom(kk_img, 0, 0.9),      # 左(そのまま)
         (0, -5): pg.transform.rotozoom(kk_flip_img, 90, 1.0),    # 上
         (0, +5): pg.transform.rotozoom(kk_flip_img, -90, 1.0),     # 下
         (+5, -5): pg.transform.rotozoom(kk_flip_img, 45, 0.9),  # 右上
@@ -106,11 +108,13 @@ def main():
     bb_rct.centerx = random.randint(0, WIDTH)  # 爆弾横座標
     bb_rct.centery = random.randint(0, HEIGHT)  # 爆弾縦座標
     vx, vy = +5, +5  # 爆弾の速度
+
     clock = pg.time.Clock()
     tmr = 0
     
     bb_imgs, bb_accs = init_bb_imgs()  # 爆弾の拡大、加速用のリストを取得する
-    kk_imgs = get_kk_imgs()
+    kk_imgs = get_kk_imgs()  # こうかとんの移動量タプルに対応した画像を返す辞書を取得
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
