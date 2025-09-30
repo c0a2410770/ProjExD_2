@@ -66,6 +66,22 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
         bb_imgs.append(bb_img)
     return bb_imgs, bb_accs
 
+def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]: # 演習3
+    kk_img = pg.image.load("fig/3.png")
+    kk_flip_img = pg.transform.flip(kk_img,True, False)  # 右向き用効果トン画像
+    kk_dict = {
+        (0, 0): pg.transform.rotozoom(kk_img, 0, 0.9),       # その場
+        (+5, 0): pg.transform.rotozoom(kk_flip_img, 0,0.9),    # 右
+        (-5, 0): pg.transform.rotozoom(kk_img, 0, 0.9),      # 左
+        (0, -5): pg.transform.rotozoom(kk_flip_img, 90, 1.0),    # 上
+        (0, +5): pg.transform.rotozoom(kk_flip_img, -90, 1.0),     # 下
+        (+5, -5): pg.transform.rotozoom(kk_flip_img, 45, 0.9),  # 右上
+        (+5, +5): pg.transform.rotozoom(kk_flip_img, -45, 0.9),   # 右下
+        (-5, -5): pg.transform.rotozoom(kk_img, -45, 0.9),   # 左上
+        (-5, +5): pg.transform.rotozoom(kk_img, 45, 0.9),    # 左下
+    }
+    return kk_dict
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -86,7 +102,7 @@ def main():
     tmr = 0
     
     bb_imgs, bb_accs = init_bb_imgs()  # 爆弾の拡大、加速用のリストを取得する
-
+    kk_imgs = get_kk_imgs()
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -125,6 +141,7 @@ def main():
         if not tate:  # 縦方向にはみ出ていたら
             vy *= -1
         
+        kk_img = kk_imgs[tuple(sum_mv)]  # 移動方向に応じてこうかとん画像の切替
         
         screen.blit(bb_img, bb_rct)
         pg.display.update()
