@@ -56,6 +56,15 @@ def gameover(screen: pg.Surface) -> None:  # 演習1
     pg.display.update()
     time.sleep(5)
 
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:  # 演習2
+    bb_imgs = []
+    bb_accs = [a for a in range(1, 11)]  # 爆弾の速さのリスト
+    for r in range(1,11):
+        bb_img = pg.Surface((20*r, 20*r))  # 爆弾の大きさのリスト
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_img.set_colorkey((0, 0, 0))
+        bb_imgs.append(bb_img)
+    return bb_imgs, bb_accs
 
 
 def main():
@@ -76,6 +85,7 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     
+    bb_imgs, bb_accs = init_bb_imgs()  # 爆弾の拡大、加速用のリストを取得する
 
     while True:
         for event in pg.event.get():
@@ -105,13 +115,17 @@ def main():
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx, vy)  #爆弾移動
+        avx = vx * bb_accs[min(tmr//500, 9)]  # 爆弾の横方向を加速する
+        avy = vy * bb_accs[min(tmr//500, 9)]  # 爆弾の縦方向を加速する
+        bb_img = bb_imgs[min(tmr//500, 9)]  # 爆弾の大きさを拡大していく
+        bb_rct.move_ip(avx, avy)  #爆弾移動
         yoko, tate = check_bound(bb_rct)
         if not yoko:  # 横方向にはみ出ていたら
             vx *= -1
         if not tate:  # 縦方向にはみ出ていたら
             vy *= -1
-            
+        
+        
         screen.blit(bb_img, bb_rct)
         pg.display.update()
         tmr += 1
