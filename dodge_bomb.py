@@ -1,3 +1,4 @@
+import math
 import os
 import random
 import sys
@@ -92,7 +93,6 @@ def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]: # 演習3
     }
     return kk_dict
 
-
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -116,6 +116,7 @@ def main():
     kk_imgs = get_kk_imgs()  # こうかとんの移動量タプルに対応した画像を返す辞書を取得
 
     while True:
+        # ユーザーの入力やOSから送られるイベントを1つずつ取り出して処理する
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
